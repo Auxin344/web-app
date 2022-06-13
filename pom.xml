@@ -102,8 +102,8 @@
 	    
 	    <snapshotRepository>
 	      <id>nexus</id>
-	      <name>ACADA Learning Snapshot Nexus Repository </name>
-	      <url>http://172.31.94.25:8081/repository/UBA-Snapshot/</url>
+	      <name>acada_repo_snapshot</name>
+	      <url>http://http://18.117.222.80:8081/repository/acada_repo_snapshot/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
