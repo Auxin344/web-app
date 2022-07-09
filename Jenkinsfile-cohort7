@@ -1,0 +1,50 @@
+pipeline{
+  agent {label 'Node1'}
+  tools{
+    maven "Maven3.8.4"
+  }
+  stages{
+    stage("1.Git Clone"){
+      steps{
+        git "https://github.com/Auxin344/web-app.git"
+      }
+    }
+    stage("2.Build"){
+      steps{
+        sh "mvn clean package"
+      }
+    }
+    stage("3.Code Quality"){
+      steps{
+        sh "mvn sonar:sonar"
+      }
+    }
+    stage("4.Artifactory"){
+      steps{
+        sh "mvn deploy"
+      }
+    }
+    stage("5.DeploytoUAT"){
+      steps{
+       deploy adapters: [tomcat9(credentialsId: '72be2126-bfa7-43db-b779-5e24503121d3', path: '', url: 'http://3.133.105.48:1552')], contextPath: null, war: 'target/*.war' 
+      }
+    }
+    stage("6.Approval"){
+      steps{
+        timeout(time:5, unit:'DAYS'){
+        input message: 'Approval for Production'
+      }
+    }
+  }
+    stage("7.deploytoPROD"){
+      steps{
+        deploy adapters: [tomcat9(credentialsId: '72be2126-bfa7-43db-b779-5e24503121d3', path: '', url: 'http://3.133.105.48:1552')], contextPath: null, war: 'target/*.war'
+      }
+    }
+    stage("8.EmailNotification"){
+      steps{
+        emailext body: 'This is Build Success', subject: 'Build Success', to: 'tolaoparinde@gmail.com'
+      }
+    }
+  }
+}
