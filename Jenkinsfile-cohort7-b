@@ -19,24 +19,20 @@ pipeline{
         sh "mvn sonar:sonar"
       }
     }
-    stage("4.Artifactory"){
-      steps{
-        //sh "mvn deploy"
-      }
-    }
     stage("6.Approval"){
       steps{
         timeout(time:5, unit:'DAYS'){
         input message: 'Approval for Production'
       }
+      }
     }
-  }
     stage("7.Deploy to PrePROD"){
       steps{
-        sh "docker build -t auxin/web-app ."
-        sh "docker run --name acadapp 2500:8080 auxin/web-app:1.2.1"
+        sh "docker rm -f acadapp"
+        sh "docker rmi auxin/acadapp:latest"
+        sh "docker build -t auxin/acadapp ."
+        sh "docker run --name acadapp -d -p 2500:8080 auxin/acadapp"
       }
     }
    }
-  }
-}
+ }
