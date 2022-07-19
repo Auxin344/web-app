@@ -19,6 +19,11 @@ pipeline{
         sh "mvn sonar:sonar"
       }
     }
+    stage("4.Artifactory"){
+      steps{
+        sh "mvn deploy"
+      }    
+    }
     stage("6.Approval"){
       steps{
         timeout(time:5, unit:'DAYS'){
@@ -36,3 +41,4 @@ pipeline{
     }
    }
  }
+    
