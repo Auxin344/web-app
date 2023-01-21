@@ -35,8 +35,8 @@ pipeline{
       steps{
        // sh "docker rm -f acadapp"
        // sh "docker rmi auxin/acadapp:latest"
-        sh "sudo docker build -t auxin/acadapp ."
-        sh "sudo docker run --name acadapp -d -p 2500:8080 auxin/acadapp"
+        sh "docker build -t auxin/acadapp ."
+        sh "docker run --name acadapp -d -p 2500:8080 auxin/acadapp"
       }
     }
    }
